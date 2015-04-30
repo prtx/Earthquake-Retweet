@@ -41,10 +41,13 @@ class StdOutListener(tweepy.StreamListener):
 			str(tweet['retweet_count'])+'\n'											#RT count
 		)
 		
-		if list_on_tweet(include,tweet['text'].lower()) or list_on_tweet(places,tweet['text'].lower()) and not list_on_tweet(exclude,'~'+tweet['text'].lower()) and tweet['text'] not in self.posted_tweets:
-			api.retweet(id=tweet['id'])
-			self.posted_tweets.append(tweet['text'])
-			print 'retweeted'
+		if list_on_tweet(include,tweet['text'].lower()) and not list_on_tweet(exclude,'~'+tweet['text'].lower()) and tweet['text'] not in self.posted_tweets:
+			_api.retweet(id=tweet['id'])
+			try:
+				self.posted_tweets.append(tweet['text'])
+				print 'retweeted'
+			except Exception:
+				pass
 			
 		
 		if self.i%18000==0:
@@ -60,14 +63,21 @@ class StdOutListener(tweepy.StreamListener):
 
 
 
+if __name__ == '__main__':	
+	key = all_keys[0]
+	tweetslist = []
+	l = StdOutListener()
+	auth = tweepy.OAuthHandler(key.consumer_key, key.consumer_secret)
+	auth.set_access_token(key.access_token, key.access_token_secret)
+	api = tweepy.API(auth)
 	
-key = all_keys[0]
-tweetslist = []
-l = StdOutListener()
-auth = tweepy.OAuthHandler(key.consumer_key, key.consumer_secret)
-auth.set_access_token(key.access_token, key.access_token_secret)
-api = tweepy.API(auth)
+	key = all_keys[1]
+	
+	_auth = tweepy.OAuthHandler(key.consumer_key, key.consumer_secret)
+	_auth.set_access_token(key.access_token, key.access_token_secret)
+	_api = tweepy.API(_auth)
 
-stream = tweepy.Stream(auth, l)
-stream.filter(track=['#nepalquakerelief','#earthquakenepal','earthquake'],async = True)
+	stream = tweepy.Stream(auth, l)
+	stream.filter(track=['#nepalquakerelief','#earthquakenepal','earthquake'],async = True)
+
 
