@@ -42,7 +42,7 @@ class StdOutListener(tweepy.StreamListener):
 		)
 		
 		if list_on_tweet(include,tweet['text'].lower()) or list_on_tweet(places,tweet['text'].lower()) and not list_on_tweet(exclude,'~'+tweet['text'].lower()) and tweet['text'] not in self.posted_tweets:
-			#api.retweet(id=tweet['id'])
+			api.retweet(id=tweet['id'])
 			self.posted_tweets.append(tweet['text'])
 			print 'retweeted'
 			
@@ -60,17 +60,14 @@ class StdOutListener(tweepy.StreamListener):
 
 
 
-def run_engine(key):
 	
-	tweetslist = []
-	l = StdOutListener()
-	auth = tweepy.OAuthHandler(key.consumer_key, key.consumer_secret)
-	auth.set_access_token(key.access_token, key.access_token_secret)
-	api = tweepy.API(auth)
-	
-	stream = tweepy.Stream(auth, l)
-	stream.filter(track=['#nepalquakerelief','#earthquakenepal','earthquake'],async = True)
+key = all_keys[0]
+tweetslist = []
+l = StdOutListener()
+auth = tweepy.OAuthHandler(key.consumer_key, key.consumer_secret)
+auth.set_access_token(key.access_token, key.access_token_secret)
+api = tweepy.API(auth)
 
-key = all_keys[1]
-run_engine(key)
-	
+stream = tweepy.Stream(auth, l)
+stream.filter(track=['#nepalquakerelief','#earthquakenepal','earthquake'],async = True)
+
