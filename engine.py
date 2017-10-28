@@ -1,12 +1,12 @@
+#/usr/bin/python3
+# -*- coding: utf-8 -*-
+
 import tweepy
 import json
 import sys
 import time
 from keys import all_keys
 
-# -*- coding: utf-8 -*-
-reload(sys)
-sys.setdefaultencoding('utf8')
 
 include = [
     'ambulance',
@@ -51,7 +51,7 @@ class StdOutListener(tweepy.StreamListener):
         csv = open('tweets.csv', 'a')
         self.i += 1
         tweet = json.loads(data)
-        print tweet['text']
+        print(tweet['text'])
         csv.write(
             str(self.i)+'\t'+                                                   #S.no
             str(tweet['id'])+'\t'+                                              #tweet id
@@ -72,36 +72,36 @@ class StdOutListener(tweepy.StreamListener):
             _api.retweet(id=tweet['id'])
             try:
                 self.posted_tweets.append(tweet['text'])
-                print 'retweeted'
+                print('retweeted')
             except Exception:
                 pass
             
         
         if self.i%18000 == 0:
             while True:
-                print time.time() - check_time
+                print(time.time() - check_time)
                 if time.time() - check_time > 900:
                     break
         return True
 
 
     def on_error(self, status):
-        print status
+        print(status)
 
 
 def tracker():
 
-    key = all_keys[0]
+    key1 = all_keys[0]
     tweetslist = []
     l = StdOutListener()
-    auth = tweepy.OAuthHandler(key.consumer_key, key.consumer_secret)
-    auth.set_access_token(key.access_token, key.access_token_secret)
+    auth = tweepy.OAuthHandler(key1.consumer_key, key1.consumer_secret)
+    auth.set_access_token(key1.access_token, key1.access_token_secret)
     api = tweepy.API(auth)
     
-    key = all_keys[1]
+    key2 = all_keys[1]
     
-    _auth = tweepy.OAuthHandler(key.consumer_key, key.consumer_secret)
-    _auth.set_access_token(key.access_token, key.access_token_secret)
+    _auth = tweepy.OAuthHandler(key2.consumer_key, key2.consumer_secret)
+    _auth.set_access_token(key2.access_token, key2.access_token_secret)
     _api = tweepy.API(_auth)
 
     stream = tweepy.Stream(auth, l)
