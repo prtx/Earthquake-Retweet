@@ -5,7 +5,7 @@ import tweepy
 import json
 import sys
 import time
-from keys import all_keys
+import keys
 
 
 include = [
@@ -91,14 +91,14 @@ class StdOutListener(tweepy.StreamListener):
 
 def tracker():
 
-    key1 = all_keys[0]
+    key1 = keys.key1
+    key2 = keys.key2
+    
     tweetslist = []
     l = StdOutListener()
     auth = tweepy.OAuthHandler(key1.consumer_key, key1.consumer_secret)
     auth.set_access_token(key1.access_token, key1.access_token_secret)
     api = tweepy.API(auth)
-    
-    key2 = all_keys[1]
     
     _auth = tweepy.OAuthHandler(key2.consumer_key, key2.consumer_secret)
     _auth.set_access_token(key2.access_token, key2.access_token_secret)
